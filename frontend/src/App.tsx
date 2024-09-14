@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Chunk, streamResponse } from './lib/voiceflow';
 
 function App() {
+  const [value, setValue] = useState<Chunk[]>([]);
+
+  useEffect(() => {
+    streamResponse("Hello!", setValue, () => {});
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -18,6 +25,7 @@ function App() {
         >
           Learn React
         </a>
+        <p>{[...value].sort((a: Chunk, b: Chunk) => a.time - b.time).join("")}</p>
       </header>
     </div>
   );
