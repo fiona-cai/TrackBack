@@ -82,6 +82,6 @@ function App() {
 
 setTimeout(function() {
   window.location.replace('../home');
-}, 8000);
+}, 7500);
 
 export default App;
