@@ -2,11 +2,11 @@ import cv2
 import boto3
 from botocore.exceptions import NoCredentialsError
 import time
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 import os
 import requests
 
-load_dotenv()
+load_dotenv(find_dotenv())
 
 cam = cv2.VideoCapture(0) #capturing the computer webcam (0 -- first camera)
 
@@ -32,8 +32,8 @@ def upload_s3(file_name, bucket, object_name=None):
         print("Credentials not available.")
 
 def send_post_req(chunk_id):
-    requests.post(os.getenv("API_BASE_URL"), json={
-        chunk_id: chunk_id
+    requests.post(os.getenv("API_URL"), json={
+        "chunk_id": chunk_id
     })
 
 #function to figure out how to upload files to s3

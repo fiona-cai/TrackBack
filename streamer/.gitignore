@@ -1,2 +1,4 @@
 venv/
 .env
+
+video_chunk_*.mp4
