@@ -4,11 +4,12 @@ import os
 import json
 import numpy as np
 import tempfile
-import torch
 from ultralytics import YOLO
 from dotenv import load_dotenv, find_dotenv
 import flask
 from flask import request
+import requests
+import io
 
 load_dotenv(find_dotenv())
 
@@ -19,6 +20,7 @@ AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
 AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
 PORT = os.environ.get("PORT_2") or 9090
 AWS_REGION = os.environ.get("AWS_REGION")
+VOICEFLOW_SECRET_ACCESS_KEY = os.environ.get("VOICEFLOW_SECRET_ACCESS_KEY")
 
 s3_client = boto3.client(
     "s3",
@@ -106,31 +108,30 @@ def run_yolov_on_video(video_path):
     return detections
 
 
-def upload_json_to_s3(detections, json_key):
+def upload_json_to_voiceflow(detections, file_name):
     """
-    Upload detection results as a JSON file to S3.
+    Upload detection results as a JSON file to Voiceflow.
 
     :param detections: List of detections
-    :param json_key: S3 object key for the JSON file
+    :param file_name: File name in VoiceFlow
     """
     # Convert detections to JSON-serializable format
-    json_detections = json.dumps(detections, cls=NumpyEncoder)
+    json_detections = json.dumps(detections)
 
-    # Upload JSON to S3
-    s3_client.put_object(Bucket=BUCKET_NAME, Key=json_key, Body=json_detections)
+    # Create an in-memory bytes buffer for the JSON data
+    json_file = io.BytesIO(json_detections.encode("utf-8"))
 
+    url = "https://api.voiceflow.com/v1/knowledge-base/docs/upload?maxChunkSize=1000"
 
-class NumpyEncoder(json.JSONEncoder):
-    """
-    Custom JSON encoder to handle numpy types
-    """
+    headers = {
+        "accept": "application/json",
+        "Authorization": VOICEFLOW_SECRET_ACCESS_KEY,
+    }
 
-    def default(self, obj):
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
-        if isinstance(obj, torch.Tensor):
-            return obj.tolist()
-        return json.JSONEncoder.default(self, obj)
+    # Prepare the file to be uploaded as multipart/form-data
+    files = {"file": (file_name, json_file, "application/json")}
+
+    requests.post(url, headers=headers, files=files)
 
 
 @app.get("/")
@@ -156,7 +157,7 @@ def process():
 
     # Save the detection results as JSON
     json_key = f"{chunk_id}_detections.json"
-    upload_json_to_s3({"chunk_id": chunk_id, "detections": detections}, json_key)
+    upload_json_to_voiceflow({"chunk_id": chunk_id, "detections": detections}, json_key)
 
     # Cleanup the downloaded file
     os.remove(video_path)
