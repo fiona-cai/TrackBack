@@ -13,8 +13,8 @@ export type Chunk = {
   type: string;
 }
 
-export function streamResponse(message: string, setValue: React.Dispatch<React.SetStateAction<Chunk[]>>, onComplete: () => void) {
-  // console.log("streaming...");
+export function streamResponse(message: string, setValue: React.Dispatch<React.SetStateAction<Chunk[]>>, onComplete: (finalValue: Chunk[] | null) => void) {
+  console.log("streaming...");
 
   const url = `https://general-runtime.voiceflow.com/v2beta1/interact/${process.env.REACT_APP_VOICEFLOW_PROJECT_ID}/${process.env.REACT_APP_VOICEFLOW_VERSION_ID}/stream`;
 
@@ -29,7 +29,7 @@ export function streamResponse(message: string, setValue: React.Dispatch<React.S
         "payload": message
       },
       "session": {
-        "sessionID": "7", // TODO
+        "sessionID": "1", // TODO
         "userID": "1" // TODO
       }
     }),
@@ -39,7 +39,7 @@ export function streamResponse(message: string, setValue: React.Dispatch<React.S
 
   source.addEventListener('trace', (event: _SSEvent) => {
     const payload = JSON.parse(event.data);
-    // console.log(payload.trace)
+    console.log(payload.trace)
 
     switch (payload.trace.type) {
       case "completion-start": {
@@ -50,9 +50,16 @@ export function streamResponse(message: string, setValue: React.Dispatch<React.S
         setValue((val) => [...val, payload.trace.payload.completion]);
         break;
       }
+      case "text": {
+        console.log("setting value", payload.trace.payload.message)
+        setValue([payload.trace.payload.message]);
+        source.close();
+        onComplete([payload.trace.payload.message]);
+        break;
+      }
       case "completion-end": {
         source.close();
-        onComplete();
+        onComplete(null);
         break;
       }
     }
