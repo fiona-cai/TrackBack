@@ -35,32 +35,50 @@ code {
 }
 
 @keyframes fadeToBlack {
-  from {
+  0% {
     background-color: #FFFFFF;
   }
 
-  to {
+  16% {
     background-color: #251404;
+  }
+
+  100% {
+    background-color: #ED7E1C;
   }
 }
 
 .logo {
   animation-delay: 1s;
   animation-name: enlargeLogo;
-  animation-duration: 1s;
+  animation-duration: 2s;
   animation-fill-mode: forwards;
 }
 
+
+
 @keyframes enlargeLogo {
-  from {
+  0% {
     scale: 100%;
   }
 
-  to {
+  80% {
     scale: 1000%;
+  }
+
+  100% {
+    scale: 2000%;
+    opacity: 0;
   }
 }
 
+.orange-background {
+  opacity: 0;
+  animation-delay: 2.4s;
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
 .percentage {
   position: absolute;
   transform: translate(-50%, -120%);
@@ -70,11 +88,12 @@ code {
   font-size: 30px;
 
   opacity: 0;
-  animation-name: fadeIn;
+  animation-name: fadeInOut;
   animation-delay: 1s;
-  animation-duration: 0.1s;
+  animation-duration: 2s;
   animation-fill-mode: forwards;
 }
+
 
 .title {
   opacity: 1;
@@ -93,6 +112,21 @@ code {
     opacity: 1;
   }
 }
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
 
 @keyframes fadeOut {
   from {
@@ -125,4 +159,41 @@ p{
   font-weight: 700;
   line-height: 38px; /* 126.667% */
   letter-spacing: -0.3px;
+}
+
+.orange-frame{
+  opacity: 0;
+  display: flex;
+  width: 90%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 64px;
+  animation-delay: 3.5s;
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  position: absolute;
+}
+
+
+h2{
+  /* Heading md/SemiBold */
+  font-family: Urbanist;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 44px; /* 122.222% */
+  letter-spacing: -0.432px;
+}
+
+h3{
+
+  /* Label/md */
+  font-family: Urbanist;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
 }
