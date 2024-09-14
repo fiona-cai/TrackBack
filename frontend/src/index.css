@@ -297,4 +297,32 @@ h4{
   width: 20px;
 height: 20px;
 fill: var(--orange, #ED7E1C);
+.speech-bubble-right, .speech-bubble-left {
+  position: relative;
+}
+
+.speech-bubble-right::before {
+  content: "";
+  border-top-left-radius: 32px;
+  border-bottom-left-radius: 32px;
+  background-color: #4d3426;
+  position: absolute;
+  bottom: -16px;
+  right: 0;
+  width: 20px;
+  height: 40px;
+  z-index: 10;
+}
+
+.speech-bubble-left::before {
+  content: "";
+  border-top-right-radius: 32px;
+  border-bottom-right-radius: 32px;
+  background-color: #e5deda;
+  position: absolute;
+  bottom: -16px;
+  left: 0;
+  width: 20px;
+  height: 40px;
+  z-index: 10;
 }
