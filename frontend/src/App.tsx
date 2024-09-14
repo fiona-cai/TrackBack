@@ -51,7 +51,12 @@ function App() {
           </svg>
           <h2 className='text-white text-left'>“I've lost my equilibrium, my car keys, and my pride.”</h2>
           <h3 className='text-white'>— Tom Waits</h3>
+          
         </div>
+        <div className='green-frame z-10'>
+          <h2 className="text-white text-center w-screen">Fetching data...</h2>
+        </div>
+        
       </div>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
@@ -74,6 +79,6 @@ function App() {
 
 setTimeout(function() {
   window.location.replace('../home');
-}, 5000);
+}, 8000);
 
 export default App;

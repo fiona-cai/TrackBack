@@ -28,9 +28,9 @@ code {
   gap: 16px;
   overflow: hidden;
 
-  animation-delay: 1s;
+  animation-delay: 0.5s;
   animation-name: fadeToBlack;
-  animation-duration: 1s;
+  animation-duration: 6s;
   animation-fill-mode: forwards;
 }
 
@@ -39,19 +39,27 @@ code {
     background-color: #FFFFFF;
   }
 
-  16% {
+  10% {
     background-color: #251404;
   }
 
-  100% {
+  60% {
     background-color: #ED7E1C;
+  }
+
+  96% {
+    background-color: #9BB168;
+  }
+
+  100% {
+    background-color: #FFFFFF;
   }
 }
 
 .logo {
-  animation-delay: 1s;
+  animation-delay: 0.8s;
   animation-name: enlargeLogo;
-  animation-duration: 2s;
+  animation-duration: 1.5s;
   animation-fill-mode: forwards;
 }
 
@@ -74,9 +82,9 @@ code {
 
 .orange-background {
   opacity: 0;
-  animation-delay: 2.4s;
-  animation-name: fadeIn;
-  animation-duration: 1s;
+  animation-delay: 1.9s;
+  animation-name: fadeInOut;
+  animation-duration: 1.5s;
   animation-fill-mode: forwards;
 }
 .percentage {
@@ -90,7 +98,7 @@ code {
   opacity: 0;
   animation-name: fadeInOut;
   animation-delay: 1s;
-  animation-duration: 2s;
+  animation-duration: 1.5s;
   animation-fill-mode: forwards;
 }
 
@@ -98,7 +106,7 @@ code {
 .title {
   opacity: 1;
   animation-name: fadeOut;
-  animation-delay: 1s;
+  animation-delay: 0.8s;
   animation-duration: 0.1s;
   animation-fill-mode: forwards;
 }
@@ -168,13 +176,25 @@ p{
   flex-direction: column;
   align-items: flex-start;
   gap: 64px;
-  animation-delay: 3.5s;
-  animation-name: fadeIn;
-  animation-duration: 1s;
+  animation-delay: 3s;
+  animation-name: fadeInOut;
+  animation-duration: 1.5s;
   animation-fill-mode: forwards;
   position: absolute;
 }
 
+.green-frame{
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 64px;
+  animation-delay: 4.5s;
+  animation-name: fadeInOut;
+  animation-duration: 2.5s;
+  animation-fill-mode: forwards;
+  position: absolute;
+}
 
 h2{
   /* Heading md/SemiBold */
@@ -196,4 +216,85 @@ h3{
   line-height: normal;
   letter-spacing: 1.4px;
   text-transform: uppercase;
+}
+
+.banner{
+  height: 475px;
+  flex-shrink: 0;
+}
+
+.banner2{
+  height: 321px;
+  flex-shrink: 0;
+}
+
+.messages{
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+}
+
+.search-view {
+  display: flex;
+  width: 360px;
+  min-width: 360px;
+  max-width: 720px;
+  min-height: 240px;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 28px;
+  background: var(--Gray-White, #FFF);
+}
+
+.search-view .header {
+  display: flex;
+  height: 56px;
+  padding: var(--sds-size-space-100);
+  justify-content: center;
+  align-items: center;
+  gap: var(--sds-size-space-100);
+  align-self: stretch;
+  border-radius: 28px 28px 0px 0px;
+  background: var(--Gray-White, #FFF);
+}
+
+
+.greeting {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+}
+
+h4{
+  align-self: stretch;
+  color: #FFF;
+
+  /* Heading sm/Bold */
+  font-family: "Plus Jakarta Sans";
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 38px; /* 126.667% */
+  letter-spacing: -1.2px;
+}
+
+.grouping{
+  display: flex;
+  width: 126px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sds-size-space-100);
+}
+
+.greeting2{
+  display: flex;
+  padding: 0px var(--sds-size-space-100);
+  align-items: center;
+  gap: 6px;
+}
+
+.logoo{
+  width: 20px;
+height: 20px;
+fill: var(--orange, #ED7E1C);
 }
