@@ -293,10 +293,12 @@ h4{
   gap: 6px;
 }
 
-.logoo{
+.logo {
   width: 20px;
 height: 20px;
 fill: var(--orange, #ED7E1C);
+}
+
 .speech-bubble-right, .speech-bubble-left {
   position: relative;
 }
