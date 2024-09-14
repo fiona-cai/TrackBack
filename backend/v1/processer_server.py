@@ -52,10 +52,10 @@ def download_video_from_s3(key):
 
 def run_yolov_on_video(video_path):
     """
-    Process a video file using YOLOv5 for object detection.
+    Process a video file using YOLOv8 for object detection and store the average color of each detected object.
 
     :param video_path: Path to the input video file
-    :return: List of detections for each frame
+    :return: List of detections for each frame, including object color
     """
     cap = cv2.VideoCapture(video_path)
     detections = []
@@ -73,18 +73,33 @@ def run_yolov_on_video(video_path):
         for r in results:
             boxes = r.boxes
             for box in boxes:
-                x1, y1, x2, y2 = box.xyxy[0].tolist()
-                conf = box.conf.item()
-                cls = int(box.cls.item())
-                label = model.names[cls]
+                x1, y1, x2, y2 = map(
+                    int, box.xyxy[0].tolist()
+                )  # Bounding box coordinates
+                conf = box.conf.item()  # Confidence score
+                cls = int(box.cls.item())  # Class ID
+                label = model.names[cls]  # Label name
+
+                # Crop the object region from the frame to calculate the color
+                object_img = frame[y1:y2, x1:x2]
+                if object_img.size > 0:  # Ensure the cropped region is not empty
+                    avg_color_per_row = np.average(object_img, axis=0)
+                    avg_color = np.average(
+                        avg_color_per_row, axis=0
+                    ).tolist()  # Convert to list for JSON-like format
+                else:
+                    avg_color = [0, 0, 0]  # Assign black color if the crop fails
+
                 frame_detections.append(
                     {
                         "box": [x1, y1, x2, y2],
                         "confidence": conf,
                         "class": cls,
                         "label": label,
+                        "color": avg_color,  # Store average color of the object
                     }
                 )
+
         detections.append(frame_detections)
 
     cap.release()
