@@ -26,7 +26,10 @@ function App() {
           }
         });
       }, 20)
-    }, 1000)
+    }, 1000);
+    setTimeout(function() {
+      window.location.replace('../home');
+    }, 5000);
   })
 
   return (
@@ -71,9 +74,5 @@ function App() {
     
   );
 }
-
-setTimeout(function() {
-  window.location.replace('../home');
-}, 5000);
 
 export default App;
