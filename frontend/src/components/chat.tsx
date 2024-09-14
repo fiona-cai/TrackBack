@@ -42,7 +42,7 @@ function Chat() {
 					<p className="text-base text-left font-normal">Sep 14, 2024</p>
 				</div>
 			</div>
-			<div className="flex flex-col gap-y-10 px-5 overflow-auto py-5">
+			<div className="flex flex-col gap-y-10 px-5 overflow-auto py-5 flex-1">
 				{messages.map((message) => (
 					<div className={clsx("p-5 rounded-3xl flex gap-x-5", message.author === "User" ? "bg-[#4d3426] text-white flex-row-reverse speech-bubble-right" : "bg-[#e5deda] text-black speech-bubble-left")}>
 						<div className={clsx("w-12 h-12 rounded-full flex justify-center items-center", message.author === "User" ? "bg-[#694a35]" : "bg-[#f6f3f2]")}>
@@ -82,7 +82,7 @@ function Chat() {
 					</div>
 				}
 			</div>
-			<div className="flex-1 bottom-0 w-screen pb-10 rounded-t-3xl flex px-5 items-center pt-2 shadow-gray-100 shadow-xl bg-white">
+			<div className="bottom-0 w-screen pb-10 rounded-t-3xl flex px-5 items-center pt-2 shadow-gray-100 shadow-xl bg-white">
 				<input
 					type="text"
 					placeholder="Type to start chatting..."
