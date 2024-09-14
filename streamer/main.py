@@ -31,8 +31,10 @@ def upload_s3(file_name, bucket, object_name=None):
     except NoCredentialsError:
         print("Credentials not available.")
 
-def send_post_req():
-    request = requests.post(os.getenv("API_BASE_URL"))
+def send_post_req(chunk_id):
+    requests.post(os.getenv("API_BASE_URL"), json={
+        chunk_id: chunk_id
+    })
 
 #function to figure out how to upload files to s3
 # fps = int(cam.get(cv2.CAP_PROP_FPS))  #frames per second of video capture 
@@ -64,5 +66,6 @@ while True:
 
 #upload to s3 
     upload_s3(out_filename, os.getenv("BUCKET_NAME"))
+    send_post_req(chunk_index)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
