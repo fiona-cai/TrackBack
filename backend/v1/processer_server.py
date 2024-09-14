@@ -156,7 +156,7 @@ def process():
 
     # Save the detection results as JSON
     json_key = f"{chunk_id}_detections.json"
-    upload_json_to_s3(detections, json_key)
+    upload_json_to_s3({"chunk_id": chunk_id, "detections": detections}, json_key)
 
     # Cleanup the downloaded file
     os.remove(video_path)
