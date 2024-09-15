@@ -71,11 +71,11 @@ code {
   }
 
   80% {
-    scale: 1000%;
+    scale: 10000%;
   }
 
   100% {
-    scale: 2000%;
+    scale: 20000%;
     opacity: 0;
   }
 }
