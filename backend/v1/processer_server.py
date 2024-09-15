@@ -1,7 +1,7 @@
 import cv2
+import json
 import boto3
 import os
-import json
 import numpy as np
 import tempfile
 from ultralytics import YOLO
@@ -20,7 +20,7 @@ AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
 AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
 PORT = os.environ.get("PORT_2") or 9090
 AWS_REGION = os.environ.get("AWS_REGION")
-VOICEFLOW_SECRET_ACCESS_KEY = os.environ.get("VOICEFLOW_SECRET_ACCESS_KEY")
+VOICEFLOW_SECRET_KEY = os.environ.get("VOICEFLOW_SECRET_KEY")
 
 s3_client = boto3.client(
     "s3",
@@ -62,6 +62,8 @@ def run_yolov_on_video(video_path):
     cap = cv2.VideoCapture(video_path)
     detections = []
 
+    curr_frame = 0
+
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -99,39 +101,67 @@ def run_yolov_on_video(video_path):
                         "class": cls,
                         "label": label,
                         "color": avg_color,  # Store average color of the object
+                        "frame": curr_frame,
                     }
                 )
 
         detections.append(frame_detections)
 
+        curr_frame += 1
+
     cap.release()
     return detections
 
 
-def upload_json_to_voiceflow(detections, file_name):
+def create(row):
+    row = row[0]
+    print(row)
+    row = {
+        "label": row["label"],
+        "confidence": row["confidence"],
+        "x1": row["box"][0],
+        "y1": row["box"][1],
+        "x2": row["box"][2],
+        "y2": row["box"][3],
+        "color_r": row["color"][0],
+        "color_g": row["color"][1],
+        "color_b": row["color"][2],
+        "frame": row["frame"],
+    }
+
+    return row
+
+
+def upload_table_to_voiceflow(detections, file_name):
     """
-    Upload detection results as a JSON file to Voiceflow.
+    Store detection results as a table.
 
     :param detections: List of detections
-    :param file_name: File name in VoiceFlow
+    :param file_name: File name to be used both locally and in VoiceFlow
     """
-    # Convert detections to JSON-serializable format
-    json_detections = json.dumps(detections)
+    items = list(map(create, detections["detections"]))
 
-    # Create an in-memory bytes buffer for the JSON data
-    json_file = io.BytesIO(json_detections.encode("utf-8"))
+    body = {
+        "data": {
+            "schema": {"searchableFields": list(items[0].keys())},
+            "name": str(detections["chunk_id"]),
+            "items": items,
+        }
+    }
 
-    url = "https://api.voiceflow.com/v1/knowledge-base/docs/upload?maxChunkSize=1000"
+    url = "https://api.voiceflow.com/v1/knowledge-base/docs/upload/table?overwrite=true"
 
     headers = {
         "accept": "application/json",
-        "Authorization": VOICEFLOW_SECRET_ACCESS_KEY,
+        "content-type": "application/json",
+        "Authorization": VOICEFLOW_SECRET_KEY,
     }
 
-    # Prepare the file to be uploaded as multipart/form-data
-    files = {"file": (file_name, json_file, "application/json")}
+    print(body)
 
-    requests.post(url, headers=headers, files=files)
+    response = requests.post(url, json=body, headers=headers)
+
+    print(response.text)
 
 
 @app.get("/")
@@ -156,8 +186,10 @@ def process():
     detections = run_yolov_on_video(video_path)
 
     # Save the detection results as JSON
-    json_key = f"{chunk_id}_detections.json"
-    upload_json_to_voiceflow({"chunk_id": chunk_id, "detections": detections}, json_key)
+    json_key = f"{chunk_id}_detections.txt"
+    upload_table_to_voiceflow(
+        {"chunk_id": chunk_id, "detections": detections}, json_key
+    )
 
     # Cleanup the downloaded file
     os.remove(video_path)

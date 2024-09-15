@@ -30,5 +30,10 @@ def new_chunk():
     return (jsonify({"message": "Job created"}), 200)
 
 
+@app.get("/<chunk>/<frame>")
+def get_frame(chunk, frame):
+    print(chunk, frame)
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=PORT)
