@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Chunk, streamResponse } from "../lib/voiceflow";
 import clsx from "clsx";
-import logo from "../logo.svg";
-import arrowTurnDownLeft from "../icons/arrow-turn-down-left.svg";
 
 type Message = {
 	content: string;
@@ -64,7 +62,9 @@ function Chat() {
 						<p className="text-base text-left font-normal flex-1">
 							{message.content}
 						</p>
+						
 					</div>
+					
 				))}
 				{!streamingMessage &&
 					<div className={clsx("p-5 rounded-3xl flex gap-x-5 bg-[#e5deda] text-black")}>
