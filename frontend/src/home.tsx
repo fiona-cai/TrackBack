@@ -1,23 +1,43 @@
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
+import headphones from './icons/headphones.svg';
+import laptop from './icons/laptop.svg';
+import phone from './icons/phone.svg';
+import tablet from './icons/tablet.svg';
+import umbrella from './icons/umbrella.svg';
+import wallet from './icons/wallet.svg';
 
 const commonItems = [
 	{
+		name: 'headphones',
+		description: 'Lorem ipsum...',
+    img: headphones
+	},
+  {
+		name: 'laptop',
+		description: 'Lorem ipsum...',
+    img: laptop
+	},
+  {
 		name: 'phone',
-		description: 'Lorem ipsum...'
+		description: 'Lorem ipsum...',
+    img: phone
+	},
+  {
+		name: 'tablet',
+		description: 'Lorem ipsum...',
+    img: tablet
+	},
+  {
+		name: 'umbrella',
+		description: 'Lorem ipsum...',
+    img: umbrella
 	},
 	{
 		name: 'wallet',
-		description: 'Lorem ipsum...'
+		description: 'Lorem ipsum...',
+    img: wallet
 	},
-	{
-		name: 'laptop',
-		description: 'Lorem ipsum...'
-	},
-	{
-		name: 'horse',
-		description: 'Lorem ipsum...'
-	}
 ]
 
 function Home() {
@@ -94,10 +114,11 @@ function Home() {
             {commonItems.filter((item) => item.name.startsWith(itemInput)).map((item, i) => (
               <li key={i}>
                 <a className={clsx("flex gap-x-5 p-4 items-center", {"bg-gray-10": currentFocus === i})} href={`/chat?initialMsg=${encodeURIComponent(item.name)}`}>
-                  <div className="rounded-full bg-[#eadeff] w-10 h-10 justify-center items-center flex">A</div>
+                  <div className="rounded-full bg-[#eadeff] w-10 h-10 justify-center items-center flex">
+                    <img src={item.img} alt={item.name} width="24" height="24" />
+                  </div>
                   <div>
                     <p className="font-normal text-lg text-left">{item.name}</p>
-                    <p className="font-normal text-base text-left">{item.description}.</p>
                   </div>
                 </a>
               </li>
