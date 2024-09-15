@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Chunk, streamResponse } from "../lib/voiceflow";
 import clsx from "clsx";
+import {v4 as uuidv4} from 'uuid';
 
 type Message = {
 	content: string;
@@ -11,6 +12,12 @@ function Chat() {
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [streamingMessage, setStreamingMessage] = useState<Chunk[]>([]);
 	const [messageInput, setMessageInput] = useState("");
+
+	const [uuid, setUuid] = useState("");
+
+	useEffect(() => {
+		setUuid(uuidv4());
+	}, []);
 
 	const sendMessage = () => {
 		setMessages((messages) => [...messages, {content: messageInput, author: "User"}])
@@ -24,7 +31,7 @@ function Chat() {
 				setMessages((messages) => [...messages, {content: [...finalValue].sort((a, b) => a.time - b.time).join(""), author: "AI"}]);
 			}
 			setStreamingMessage([]);
-		});
+		}, uuid);
 
 		setMessageInput("");
 	}

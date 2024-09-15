@@ -1,4 +1,5 @@
 import {SSE, _SSEvent} from 'sse.js';
+import {v4 as uuidv4} from 'uuid';
 
 export type Chunk = {
   payload: {
@@ -13,7 +14,7 @@ export type Chunk = {
   type: string;
 }
 
-export function streamResponse(message: string, setValue: React.Dispatch<React.SetStateAction<Chunk[]>>, onComplete: (finalValue: Chunk[] | null) => void) {
+export function streamResponse(message: string, setValue: React.Dispatch<React.SetStateAction<Chunk[]>>, onComplete: (finalValue: Chunk[] | null) => void, uuid: string) {
   console.log("streaming...");
 
   const url = `https://general-runtime.voiceflow.com/v2beta1/interact/${process.env.REACT_APP_VOICEFLOW_PROJECT_ID}/${process.env.REACT_APP_VOICEFLOW_VERSION_ID}/stream`;
@@ -29,7 +30,7 @@ export function streamResponse(message: string, setValue: React.Dispatch<React.S
         "payload": message
       },
       "session": {
-        "sessionID": "1", // TODO
+        "sessionID": uuid, // TODO
         "userID": "1" // TODO
       }
     }),
