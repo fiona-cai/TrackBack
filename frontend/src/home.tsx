@@ -108,8 +108,8 @@ function Home() {
       <div className="pt-5">
         <h5 className="text-3xl font-bold px-3">Recent Finds</h5>
         <ul className="flex flex-wrap gap-3 w-full mt-4 pr-3 px-2">
-          {[...history].reverse().slice(0, 5).map((pastItem) => (
-            <a href={`/chat?initialMsg=${encodeURIComponent(pastItem)}`} className="bg-[#d9d9d9] px-3 rounded-xl hover:brightness-90 text-lg">{pastItem}</a>
+          {[...history].reverse().slice(0, 5).map((pastItem, i) => (
+            <a key={i} href={`/chat?initialMsg=${encodeURIComponent(pastItem)}`} className="bg-[#d9d9d9] px-3 rounded-xl hover:brightness-90 text-lg">{pastItem}</a>
           ))}
         </ul>
       </div>
