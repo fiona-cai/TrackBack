@@ -113,38 +113,43 @@ def run_yolov_on_video(video_path):
     return detections
 
 
-def create(row):
-    row = row[0]
-    print(row)
-    row = {
-        "label": row["label"],
-        "confidence": row["confidence"],
-        "x1": row["box"][0],
-        "y1": row["box"][1],
-        "x2": row["box"][2],
-        "y2": row["box"][3],
-        "color_r": row["color"][0],
-        "color_g": row["color"][1],
-        "color_b": row["color"][2],
-        "frame": row["frame"],
-    }
+def create_row(chunk_id):
+    def create(row):
+        if len(row) <= 0:
+            return
+        row = row[0]
+        print(row)
+        row = {
+            "chunk_id": chunk_id,
+            "label": row["label"],
+            "confidence": row["confidence"],
+            "x1": row["box"][0],
+            "y1": row["box"][1],
+            "x2": row["box"][2],
+            "y2": row["box"][3],
+            "color_r": row["color"][0],
+            "color_g": row["color"][1],
+            "color_b": row["color"][2],
+            "frame": row["frame"],
+        }
 
-    return row
+        return row
+
+    return create
 
 
-def upload_table_to_voiceflow(detections, file_name):
+def upload_table_to_voiceflow(detections, chunk_id):
     """
     Store detection results as a table.
 
     :param detections: List of detections
-    :param file_name: File name to be used both locally and in VoiceFlow
     """
-    items = list(map(create, detections["detections"]))
+    items = list(map(create_row(chunk_id), detections))
 
     body = {
         "data": {
             "schema": {"searchableFields": list(items[0].keys())},
-            "name": str(detections["chunk_id"]),
+            "name": str(chunk_id),
             "items": items,
         }
     }
@@ -185,11 +190,7 @@ def process():
     # Process the video with YOLOv5
     detections = run_yolov_on_video(video_path)
 
-    # Save the detection results as JSON
-    json_key = f"{chunk_id}_detections.txt"
-    upload_table_to_voiceflow(
-        {"chunk_id": chunk_id, "detections": detections}, json_key
-    )
+    upload_table_to_voiceflow(detections, chunk_id)
 
     # Cleanup the downloaded file
     os.remove(video_path)

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Chat from './components/chat';
 
 function App() {
   // testing code

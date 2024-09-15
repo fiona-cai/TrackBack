@@ -1,34 +1,94 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import headphones from './icons/headphones.svg';
+import laptop from './icons/laptop.svg';
+import phone from './icons/phone.svg';
+import tablet from './icons/tablet.svg';
+import umbrella from './icons/umbrella.svg';
+import wallet from './icons/wallet.svg';
 
 const commonItems = [
 	{
+		name: 'headphones',
+		description: 'Lorem ipsum...',
+    img: headphones
+	},
+  {
+		name: 'laptop',
+		description: 'Lorem ipsum...',
+    img: laptop
+	},
+  {
 		name: 'phone',
-		description: 'Lorem ipsum...'
+		description: 'Lorem ipsum...',
+    img: phone
+	},
+  {
+		name: 'tablet',
+		description: 'Lorem ipsum...',
+    img: tablet
+	},
+  {
+		name: 'umbrella',
+		description: 'Lorem ipsum...',
+    img: umbrella
 	},
 	{
 		name: 'wallet',
-		description: 'Lorem ipsum...'
+		description: 'Lorem ipsum...',
+    img: wallet
 	},
-	{
-		name: 'laptop',
-		description: 'Lorem ipsum...'
-	},
-	{
-		name: 'horse',
-		description: 'Lorem ipsum...'
-	}
 ]
 
 function Home() {
   const [isFocused, setIsFocused] = useState(false);
   const [itemInput, setItemInput] = useState('');
+  const [currentFocus, setCurrentFocus] = useState(-1);
+
+  const [history, setHistory] = useState<string[]>([]);
+
+  useEffect(() => {
+    const storedHistory = localStorage.getItem('history');
+
+    if (storedHistory !== null) {
+      setHistory(JSON.parse(storedHistory));
+    }
+  }, []);
 
   const onKeyDownInput = (code: string) => {
     if (code === 'Enter') {
-      window.location.replace(`../chat?initialMsg=${encodeURIComponent(itemInput)}`)
+      if (currentFocus === -1) {
+        window.location.replace(`../chat?initialMsg=${encodeURIComponent(itemInput)}`);
+      } else {
+        window.location.replace(`../chat?initialMsg=${encodeURIComponent(commonItems.filter((item) => item.name.startsWith(itemInput))[currentFocus].name)}`);
+      }
+    } else if (code === 'ArrowDown') {
+      setCurrentFocus((prev) => {
+        if (prev < (commonItems.filter((item) => item.name.startsWith(itemInput)).length - 1)) {
+          return prev + 1;
+        } else {
+          return prev;
+        }
+      });
+    } else if (code === 'ArrowUp') {
+      setCurrentFocus((prev) => {
+        if (prev > -1) {
+          return prev - 1;
+        } else {
+          return prev;
+        }
+      });
     }
-  }
+  };
+
+  const onInput = () => {
+    setCurrentFocus(-1);
+    setIsFocused(true);
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', () => setIsFocused(false));
+  }, []);
 
   return (
     <main>
@@ -36,7 +96,7 @@ function Home() {
         <div className="px-8 flex gap-x-5 items-center">
           <div className="rounded-full bg-[#d9d9d9] w-16 h-16"></div>
           <div className="text-white">
-            <h1 className="text-4xl mb-1">Hi, !</h1>
+            <h1 className="text-4xl mb-1">Hi, Fiona!</h1>
             <div className="flex items-center gap-x-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 73 73" fill="none">
                 <path d="M36.5 44.6765C44.232 44.6765 50.5 50.9445 50.5 58.6765V58.6765C50.5 66.4084 44.232 72.6765 36.5 72.6765V72.6765C28.768 72.6765 22.5 66.4084 22.5 58.6765V58.6765C22.5 50.9445 28.768 44.6765 36.5 44.6765V44.6765Z" fill="#f67d09"/>
@@ -44,20 +104,21 @@ function Home() {
                 <path d="M36.5 0.676453C44.232 0.676453 50.5 6.94447 50.5 14.6765V14.6765C50.5 22.4084 44.232 28.6765 36.5 28.6765V28.6765C28.768 28.6765 22.5 22.4084 22.5 14.6765V14.6765C22.5 6.94447 28.768 0.676453 36.5 0.676453V0.676453Z" fill="#f67d09"/>
                 <path d="M58.5 22.6765C66.232 22.6765 72.5 28.9445 72.5 36.6765V36.6765C72.5 44.4084 66.232 50.6765 58.5 50.6765V50.6765C50.768 50.6765 44.5 44.4084 44.5 36.6765V36.6765C44.5 28.9445 50.768 22.6765 58.5 22.6765V22.6765Z" fill="#f67d09"/>
               </svg>
-              <p className="text-base">56 items found</p>
+              <p className="text-base">{history.length} items found</p>
             </div>
           </div>
         </div>
         <div className="relative mx-2 mt-6">
-          <input type="text" value={itemInput} onChange={(event) => setItemInput(event.target.value)} className={clsx("w-full h-14 px-5", isFocused && commonItems.some((item) => item.name.startsWith(itemInput)) ? "rounded-t-[28px]" : "rounded-full")} placeholder="What are we finding today?" onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)} onKeyDown={(event) => onKeyDownInput(event.code)} />
+          <input type="text" value={itemInput} onChange={(event) => setItemInput(event.target.value)} className={clsx("w-full h-14 px-5", isFocused && commonItems.some((item) => item.name.startsWith(itemInput)) ? "rounded-t-[28px]" : "rounded-full")} placeholder="What are we finding today?" onKeyDown={(event) => onKeyDownInput(event.code)} onInput={() => onInput()} />
           <ul className={clsx("bg-white absolute top-full w-full shadow-xl rounded-b-3xl", isFocused && commonItems.some((item) => item.name.startsWith(itemInput)) ? "border-t" : "hidden")}>
             {commonItems.filter((item) => item.name.startsWith(itemInput)).map((item, i) => (
               <li key={i}>
-                <a className="flex gap-x-5 p-4 items-center" href={`/chat?initialMsg=${encodeURIComponent(item.name)}`}>
-                  <div className="rounded-full bg-[#eadeff] w-10 h-10 justify-center items-center flex">A</div>
+                <a className={clsx("flex gap-x-5 p-4 items-center", {"bg-gray-10": currentFocus === i})} href={`/chat?initialMsg=${encodeURIComponent(item.name)}`}>
+                  <div className="rounded-full bg-[#eadeff] w-10 h-10 justify-center items-center flex">
+                    <img src={item.img} alt={item.name} width="24" height="24" />
+                  </div>
                   <div>
                     <p className="font-normal text-lg text-left">{item.name}</p>
-                    <p className="font-normal text-base text-left">{item.description}.</p>
                   </div>
                 </a>
               </li>
@@ -65,12 +126,12 @@ function Home() {
           </ul>
         </div>
       </div>
-      <div className="px-3 pt-2">
-        <h5 className="text-3xl font-bold">Recent Finds</h5>
-        <ul className="overflow-x-auto overflow-y-hidden whitespace-nowrap w-full mt-4">
-          <li className="w-52 h-64 bg-[#d9d9d9] rounded-3xl mr-3 inline-block"></li>
-          <li className="w-52 h-64 bg-[#d9d9d9] rounded-3xl mr-3 inline-block"></li>
-          <li className="w-52 h-64 bg-[#d9d9d9] rounded-3xl mr-3 inline-block"></li>
+      <div className="pt-5">
+        <h5 className="text-3xl font-bold px-3">Recent Finds</h5>
+        <ul className="flex flex-wrap gap-3 w-full mt-4 pr-3 px-2">
+          {[...history].reverse().slice(0, 5).map((pastItem, i) => (
+            <a key={i} href={`/chat?initialMsg=${encodeURIComponent(pastItem)}`} className="bg-[#d9d9d9] px-3 rounded-xl hover:brightness-90 text-lg">{pastItem}</a>
+          ))}
         </ul>
       </div>
     </main>
