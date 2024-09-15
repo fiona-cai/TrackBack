@@ -96,7 +96,7 @@ function Home() {
         <div className="px-8 flex gap-x-5 items-center">
           <div className="rounded-full bg-[#d9d9d9] w-16 h-16"></div>
           <div className="text-white">
-            <h1 className="text-4xl mb-1">Hi, !</h1>
+            <h1 className="text-4xl mb-1">Hi, Fiona!</h1>
             <div className="flex items-center gap-x-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 73 73" fill="none">
                 <path d="M36.5 44.6765C44.232 44.6765 50.5 50.9445 50.5 58.6765V58.6765C50.5 66.4084 44.232 72.6765 36.5 72.6765V72.6765C28.768 72.6765 22.5 66.4084 22.5 58.6765V58.6765C22.5 50.9445 28.768 44.6765 36.5 44.6765V44.6765Z" fill="#f67d09"/>
@@ -104,7 +104,7 @@ function Home() {
                 <path d="M36.5 0.676453C44.232 0.676453 50.5 6.94447 50.5 14.6765V14.6765C50.5 22.4084 44.232 28.6765 36.5 28.6765V28.6765C28.768 28.6765 22.5 22.4084 22.5 14.6765V14.6765C22.5 6.94447 28.768 0.676453 36.5 0.676453V0.676453Z" fill="#f67d09"/>
                 <path d="M58.5 22.6765C66.232 22.6765 72.5 28.9445 72.5 36.6765V36.6765C72.5 44.4084 66.232 50.6765 58.5 50.6765V50.6765C50.768 50.6765 44.5 44.4084 44.5 36.6765V36.6765C44.5 28.9445 50.768 22.6765 58.5 22.6765V22.6765Z" fill="#f67d09"/>
               </svg>
-              <p className="text-base">56 items found</p>
+              <p className="text-base">{history.length} items found</p>
             </div>
           </div>
         </div>
