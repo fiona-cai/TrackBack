@@ -74,7 +74,7 @@ function Chat() {
 			<div className="flex gap-y-10 px-5 overflow-auto pt-5 pb-10 flex-1 flex-col-reverse" ref={msgContainer}>
 				{isLoading && <div className="loader"></div>}
 				{messages.map((message, i) => (
-					<div key={i} className={clsx("p-5 rounded-3xl flex gap-x-5", message.author === "User" ? "bg-[#4d3426] text-white flex-row-reverse" : "bg-[#e5deda] text-black", {'speech-bubble-right': message.author === "User" && i === 0, 'speech-bubble-left': message.author === "AI" && i === 0})}>
+					<div key={i} className={clsx("p-5 rounded-3xl flex gap-x-5", message.author === "User" ? "bg-[#4d3426] text-white flex-row-reverse" : "bg-[#e5deda] text-black", {'speech-bubble-right': message.author === "User" && ((i > 0 && messages[i - 1].author === "AI") || i === 0), 'speech-bubble-left': message.author === "AI" && ((i > 0 && messages[i - 1].author === "User") || i === 0)})}>
 						<div className={clsx("w-12 h-12 rounded-full flex justify-center items-center", message.author === "User" ? "bg-[#694a35]" : "bg-[#f6f3f2]")}>
 							{
 								message.author === "User" ? (
