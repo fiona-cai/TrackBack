@@ -71,7 +71,7 @@ function Chat() {
 					<p className="text-base text-left font-normal">{new Date().toDateString()}</p>
 				</div>
 			</div>
-			<div className="flex gap-y-10 px-5 overflow-auto pt-5 pb-10 flex-1 flex-col-reverse" ref={msgContainer}>
+			<div className="flex gap-y-2 px-5 overflow-auto pt-5 pb-10 flex-1 flex-col-reverse" ref={msgContainer}>
 				{isLoading && <div className="loader"></div>}
 				{messages.map((message, i) => (
 					<div key={i} className={clsx("p-5 rounded-3xl flex gap-x-5", message.author === "User" ? "bg-[#4d3426] text-white flex-row-reverse" : "bg-[#e5deda] text-black", {'speech-bubble-right': message.author === "User" && i === 0, 'speech-bubble-left': message.author === "AI" && i === 0})}>
