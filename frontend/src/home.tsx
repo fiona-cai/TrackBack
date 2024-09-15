@@ -1,8 +1,34 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
 
+const commonItems = [
+	{
+		name: 'phone',
+		description: 'Lorem ipsum...'
+	},
+	{
+		name: 'wallet',
+		description: 'Lorem ipsum...'
+	},
+	{
+		name: 'laptop',
+		description: 'Lorem ipsum...'
+	},
+	{
+		name: 'horse',
+		description: 'Lorem ipsum...'
+	}
+]
+
 function Home() {
   const [isFocused, setIsFocused] = useState(false);
+  const [itemInput, setItemInput] = useState('');
+
+  const onKeyDownInput = (code: string) => {
+    if (code === 'Enter') {
+      window.location.replace(`../chat?initialMsg=${encodeURIComponent(itemInput)}`)
+    }
+  }
 
   return (
     <main>
@@ -23,29 +49,19 @@ function Home() {
           </div>
         </div>
         <div className="relative mx-2 mt-6">
-          <input type="text" className={clsx("w-full h-14 px-5", isFocused ? "rounded-t-[28px]" : "rounded-full")} placeholder="What are we finding today?" onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)} />
-          <ul className={clsx("bg-white absolute top-full w-full shadow-xl rounded-b-3xl", isFocused ? "border-t" : "hidden")}>
-            <li className="flex gap-x-5 p-4 items-center">
-              <div className="rounded-full bg-[#eadeff] w-10 h-10 justify-center items-center flex">A</div>
-              <div>
-                <p className="font-normal text-lg text-left">List item</p>
-                <p className="font-normal text-base text-left">Lorem ipsum...</p>
-              </div>
-            </li>
-            <li className="flex gap-x-5 p-4 items-center">
-              <div className="rounded-full bg-[#eadeff] w-10 h-10 justify-center items-center flex">A</div>
-              <div>
-                <p className="font-normal text-lg text-left">List item</p>
-                <p className="font-normal text-base text-left">Lorem ipsum...</p>
-              </div>
-            </li>
-            <li className="flex gap-x-5 p-4 items-center">
-              <div className="rounded-full bg-[#eadeff] w-10 h-10 justify-center items-center flex">A</div>
-              <div>
-                <p className="font-normal text-lg text-left">List item</p>
-                <p className="font-normal text-base text-left">Lorem ipsum...</p>
-              </div>
-            </li>
+          <input type="text" value={itemInput} onChange={(event) => setItemInput(event.target.value)} className={clsx("w-full h-14 px-5", isFocused && commonItems.some((item) => item.name.startsWith(itemInput)) ? "rounded-t-[28px]" : "rounded-full")} placeholder="What are we finding today?" onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)} onKeyDown={(event) => onKeyDownInput(event.code)} />
+          <ul className={clsx("bg-white absolute top-full w-full shadow-xl rounded-b-3xl", isFocused && commonItems.some((item) => item.name.startsWith(itemInput)) ? "border-t" : "hidden")}>
+            {commonItems.filter((item) => item.name.startsWith(itemInput)).map((item, i) => (
+              <li key={i}>
+                <a className="flex gap-x-5 p-4 items-center" href={`/chat?initialMsg=${encodeURIComponent(item.name)}`}>
+                  <div className="rounded-full bg-[#eadeff] w-10 h-10 justify-center items-center flex">A</div>
+                  <div>
+                    <p className="font-normal text-lg text-left">{item.name}</p>
+                    <p className="font-normal text-base text-left">{item.description}.</p>
+                  </div>
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

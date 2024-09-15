@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Chunk, streamResponse } from './lib/voiceflow';
 import Chat from './components/chat';
 
 function App() {
