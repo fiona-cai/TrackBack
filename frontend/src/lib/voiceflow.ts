@@ -1,5 +1,3 @@
-import { SSE, _SSEvent } from "sse.js";
-
 export async function launch() {
 	const userId = "1";
 

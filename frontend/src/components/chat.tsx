@@ -77,7 +77,7 @@ function Chat() {
 			}
 		}
 		launchChat();
-	}, []);
+	}, [searchParams]);
 
 	const sendMessage = async () => {
 		setMessages((messages) => [
