@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { getResponse, launch } from "../lib/voiceflow";
 import clsx from "clsx";
-import {v4 as uuidv4} from 'uuid';
 import { useParams, useSearchParams } from "react-router-dom";
 
 type Message = {
