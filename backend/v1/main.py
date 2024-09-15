@@ -6,6 +6,7 @@ from tasks import my_task
 import os
 import cv2
 from io import BytesIO
+from flask_cors import CORS
 import tempfile
 import boto3
 
@@ -28,6 +29,8 @@ s3_client = boto3.client(
 
 app = flask.Flask(__name__)
 
+CORS(app)
+
 
 @app.get("/")
 def health_check():
@@ -48,6 +51,7 @@ def new_chunk():
 
 @app.get("/<chunk>/<frame>")
 def get_frame(chunk, frame):
+    print("JAJAJJA")
     chunk = int(chunk)
     frame = int(frame)
     try:
@@ -56,6 +60,8 @@ def get_frame(chunk, frame):
 
         # Construct the S3 key
         s3_key = f"video_chunk_{chunk}.mp4"
+
+        print(s3_key)
 
         # Download the video chunk from S3
         response = s3_client.get_object(Bucket=S3_BUCKET_NAME, Key=s3_key)
