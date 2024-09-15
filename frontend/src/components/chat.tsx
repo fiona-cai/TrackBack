@@ -16,11 +16,21 @@ function Chat() {
 	const [searchParams] = useSearchParams();
 	const msgContainer = useRef<HTMLDivElement>(null);
 
+	const updateHistory = (newItem: string) => {
+		const storedHistory = localStorage.getItem('history');
+		if (storedHistory === null) {
+			localStorage.setItem('history', JSON.stringify([newItem]));
+		} else {
+			localStorage.setItem('history', JSON.stringify([...JSON.parse(storedHistory), newItem]));
+		}
+	};
+
 	useEffect(() => {
 		async function launchChat() {
 			await launch();
 			const initialMsg = searchParams.get("initialMsg");
 			if (initialMsg) {
+				updateHistory(initialMsg);
 				setIsLoading(true);
 				const findRes = await getResponse(initialMsg);
 				setIsLoading(false);
@@ -126,7 +136,15 @@ function Chat() {
 
 	return (
 		<main className="flex flex-col h-screen">
-			{/* ... (header code remains the same) ... */}
+			<div className="shadow-xl pt-5 rounded-b-3xl flex flex-row items-center px-5 pb-3 gap-x-3">
+				<a className="rounded-full border border-[#efe8e6] w-12 h-12 flex justify-center items-center" href="/home">
+					&lt;
+				</a>
+				<div>
+					<h2 className="text-xl font-bold">{searchParams.get('initialMsg') ? searchParams.get('initialMsg') : 'New Chat'}</h2>
+					<p className="text-base text-left font-normal">{new Date().toDateString()}</p>
+				</div>
+			</div>
 			<div
 				className="flex gap-y-10 px-5 overflow-auto pt-5 pb-10 flex-1 flex-col-reverse"
 				ref={msgContainer}

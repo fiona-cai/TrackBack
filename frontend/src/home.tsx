@@ -25,6 +25,16 @@ function Home() {
   const [itemInput, setItemInput] = useState('');
   const [currentFocus, setCurrentFocus] = useState(-1);
 
+  const [history, setHistory] = useState<string[]>([]);
+
+  useEffect(() => {
+    const storedHistory = localStorage.getItem('history');
+
+    if (storedHistory !== null) {
+      setHistory(JSON.parse(storedHistory));
+    }
+  }, []);
+
   const onKeyDownInput = (code: string) => {
     if (code === 'Enter') {
       if (currentFocus === -1) {
@@ -97,10 +107,10 @@ function Home() {
       </div>
       <div className="pt-5">
         <h5 className="text-3xl font-bold px-3">Recent Finds</h5>
-        <ul className="overflow-x-auto overflow-y-hidden whitespace-nowrap w-full mt-4 pr-3">
-          <li className="w-52 h-64 bg-[#d9d9d9] rounded-3xl ml-3 inline-block"></li>
-          <li className="w-52 h-64 bg-[#d9d9d9] rounded-3xl ml-3 inline-block"></li>
-          <li className="w-52 h-64 bg-[#d9d9d9] rounded-3xl ml-3 inline-block"></li>
+        <ul className="flex flex-wrap gap-3 w-full mt-4 pr-3 px-2">
+          {[...history].reverse().slice(0, 5).map((pastItem) => (
+            <a href={`/chat?initialMsg=${encodeURIComponent(pastItem)}`} className="bg-[#d9d9d9] px-3 rounded-xl hover:brightness-90 text-lg">{pastItem}</a>
+          ))}
         </ul>
       </div>
     </main>
