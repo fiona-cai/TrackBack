@@ -94,12 +94,12 @@ function Home() {
           </ul>
         </div>
       </div>
-      <div className="px-3 pt-5">
-        <h5 className="text-3xl font-bold">Recent Finds</h5>
-        <ul className="overflow-x-auto overflow-y-hidden whitespace-nowrap w-full mt-4">
-          <li className="w-52 h-64 bg-[#d9d9d9] rounded-3xl mr-3 inline-block"></li>
-          <li className="w-52 h-64 bg-[#d9d9d9] rounded-3xl mr-3 inline-block"></li>
-          <li className="w-52 h-64 bg-[#d9d9d9] rounded-3xl mr-3 inline-block"></li>
+      <div className="pt-5">
+        <h5 className="text-3xl font-bold px-3">Recent Finds</h5>
+        <ul className="overflow-x-auto overflow-y-hidden whitespace-nowrap w-full mt-4 pr-3">
+          <li className="w-52 h-64 bg-[#d9d9d9] rounded-3xl ml-3 inline-block"></li>
+          <li className="w-52 h-64 bg-[#d9d9d9] rounded-3xl ml-3 inline-block"></li>
+          <li className="w-52 h-64 bg-[#d9d9d9] rounded-3xl ml-3 inline-block"></li>
         </ul>
       </div>
     </main>
