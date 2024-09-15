@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const commonItems = [
 	{
@@ -23,12 +23,41 @@ const commonItems = [
 function Home() {
   const [isFocused, setIsFocused] = useState(false);
   const [itemInput, setItemInput] = useState('');
+  const [currentFocus, setCurrentFocus] = useState(-1);
 
   const onKeyDownInput = (code: string) => {
     if (code === 'Enter') {
-      window.location.replace(`../chat?initialMsg=${encodeURIComponent(itemInput)}`)
+      if (currentFocus === -1) {
+        window.location.replace(`../chat?initialMsg=${encodeURIComponent(itemInput)}`);
+      } else {
+        window.location.replace(`../chat?initialMsg=${encodeURIComponent(commonItems.filter((item) => item.name.startsWith(itemInput))[currentFocus].name)}`);
+      }
+    } else if (code === 'ArrowDown') {
+      setCurrentFocus((prev) => {
+        if (prev < (commonItems.filter((item) => item.name.startsWith(itemInput)).length - 1)) {
+          return prev + 1;
+        } else {
+          return prev;
+        }
+      });
+    } else if (code === 'ArrowUp') {
+      setCurrentFocus((prev) => {
+        if (prev > -1) {
+          return prev - 1;
+        } else {
+          return prev;
+        }
+      });
     }
-  }
+  };
+
+  const onInput = () => {
+    setIsFocused(true);
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', () => setIsFocused(false));
+  }, []);
 
   return (
     <main>
@@ -49,11 +78,11 @@ function Home() {
           </div>
         </div>
         <div className="relative mx-2 mt-6">
-          <input type="text" value={itemInput} onChange={(event) => setItemInput(event.target.value)} className={clsx("w-full h-14 px-5", isFocused && commonItems.some((item) => item.name.startsWith(itemInput)) ? "rounded-t-[28px]" : "rounded-full")} placeholder="What are we finding today?" onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)} onKeyDown={(event) => onKeyDownInput(event.code)} />
+          <input type="text" value={itemInput} onChange={(event) => setItemInput(event.target.value)} className={clsx("w-full h-14 px-5", isFocused && commonItems.some((item) => item.name.startsWith(itemInput)) ? "rounded-t-[28px]" : "rounded-full")} placeholder="What are we finding today?" onKeyDown={(event) => onKeyDownInput(event.code)} onInput={() => onInput()} />
           <ul className={clsx("bg-white absolute top-full w-full shadow-xl rounded-b-3xl", isFocused && commonItems.some((item) => item.name.startsWith(itemInput)) ? "border-t" : "hidden")}>
             {commonItems.filter((item) => item.name.startsWith(itemInput)).map((item, i) => (
               <li key={i}>
-                <a className="flex gap-x-5 p-4 items-center" href={`/chat?initialMsg=${encodeURIComponent(item.name)}`}>
+                <a className={clsx("flex gap-x-5 p-4 items-center", {"bg-gray-10": currentFocus === i})} href={`/chat?initialMsg=${encodeURIComponent(item.name)}`}>
                   <div className="rounded-full bg-[#eadeff] w-10 h-10 justify-center items-center flex">A</div>
                   <div>
                     <p className="font-normal text-lg text-left">{item.name}</p>
