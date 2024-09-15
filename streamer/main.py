@@ -48,7 +48,7 @@ def send_post_request(chunk_id):
 
 
 def capture_and_upload_video():
-    cam = cv2.VideoCapture(2)
+    cam = cv2.VideoCapture(3)
     if not cam.isOpened():
         logging.error("Error: Could not open camera.")
         return
