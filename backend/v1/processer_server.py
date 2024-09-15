@@ -115,6 +115,8 @@ def run_yolov_on_video(video_path):
 
 def create_row(chunk_id):
     def create(row):
+        if len(row) <= 0:
+            return
         row = row[0]
         print(row)
         row = {
