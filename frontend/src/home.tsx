@@ -94,7 +94,7 @@ function Home() {
           </ul>
         </div>
       </div>
-      <div className="px-3 pt-2">
+      <div className="px-3 pt-5">
         <h5 className="text-3xl font-bold">Recent Finds</h5>
         <ul className="overflow-x-auto overflow-y-hidden whitespace-nowrap w-full mt-4">
           <li className="w-52 h-64 bg-[#d9d9d9] rounded-3xl mr-3 inline-block"></li>
