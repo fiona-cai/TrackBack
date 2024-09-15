@@ -105,6 +105,11 @@ function Chat() {
 					className="h-12 mr-5 rounded-full bg-[#f6f3f2] flex-1 px-3"
 					value={messageInput}
 					onChange={(event) => setMessageInput(event.target.value)}
+					onKeyDown={(event) => {
+						if (event.code === 'Enter') {
+							sendMessage();
+						}
+					}}
 				/>
 				<button onClick={() => sendMessage()} className="bg-[#a0b16e] text-white rounded-full w-12 h-12 flex items-center justify-center">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#FFF" className="size-6">
