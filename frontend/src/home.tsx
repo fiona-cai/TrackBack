@@ -52,6 +52,7 @@ function Home() {
   };
 
   const onInput = () => {
+    setCurrentFocus(-1);
     setIsFocused(true);
   };
 
