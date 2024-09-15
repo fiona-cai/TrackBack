@@ -48,7 +48,7 @@ def send_post_request(chunk_id):
 
 
 def capture_and_upload_video():
-    cam = cv2.VideoCapture(3)
+    cam = cv2.VideoCapture(3) 
     if not cam.isOpened():
         logging.error("Error: Could not open camera.")
         return
@@ -56,7 +56,7 @@ def capture_and_upload_video():
     logging.info("Camera opened successfully.")
 
     chunk_duration = 5  # seconds
-    fps = 60
+    fps = 60 #frames per second
     width = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
