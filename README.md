@@ -1,4 +1,5 @@
-
+<div align="center">
+  
 ![MacBook Air - 1 (1)](https://github.com/user-attachments/assets/3ac05f13-0da3-42b0-9af6-17fe09ecb854)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
@@ -12,7 +13,7 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)
-
+</div>
 > Picture this: 
 Your world is familiar, yet fading. You reach for your glasses, but they’re gone. You check the usual spots for your keys, but they aren’t there. Every day, simple tasks become a puzzle, a battle against memory.
 
